@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Sidebar · Clean</title>
+
+    <!-- Google Material Symbols (Rounded) -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <!-- LEFT RAIL -->
+      <nav class="rail rail--main" aria-label="Main">
+        <button
+          class="rail-btn logo"
+          data-section="dashboard"
+          aria-label="Logo"
+        >
+          <span class="mi">cannabis</span>
+        </button>
+
+        <button
+          class="rail-btn is-active"
+          data-section="dashboard"
+          title="Dashboard"
+          aria-label="Dashboard"
+        >
+          <span class="mi">space_dashboard</span>
+        </button>
+
+        <button
+          class="rail-btn"
+          data-section="tasks"
+          title="Tasks"
+          aria-label="Tasks"
+        >
+          <span class="mi">assignment_turned_in</span>
+        </button>
+
+        <div class="rail-spacer" aria-hidden="true"></div>
+
+        <button
+          class="rail-btn"
+          id="themeToggle"
+          title="Switch to light theme"
+          aria-label="Switch to light theme"
+        >
+          <!-- Icon is updated by script on load based on current theme -->
+          <span class="mi" id="themeIcon">light_mode</span>
+        </button>
+
+        <button
+          class="rail-btn"
+          data-section="settings"
+          title="Settings"
+          aria-label="Settings"
+        >
+          <span class="mi">settings</span>
+        </button>
+
+        <button
+          class="rail-btn"
+          data-section="account"
+          title="Account"
+          aria-label="Account"
+        >
+          <span class="mi">account_circle</span>
+        </button>
+      </nav>
+
+      <!-- Divider -->
+      <div class="divider" aria-hidden="true"></div>
+
+      <!-- SECOND RAIL (context) -->
+      <aside class="context" aria-live="polite">
+        <!-- Title + arrow -->
+        <header class="context-head">
+          <h2 class="ctx-title" id="ctxTitle">Dashboard</h2>
+          <button
+            class="rail-btn"
+            title="Collapse"
+            aria-label="Collapse"
+            id="ctxCollapse"
+          >
+            <span class="mi">chevron_left</span>
+          </button>
+        </header>
+
+        <!-- Search with inline icon -->
+        <div class="context-search">
+          <span class="mi" aria-hidden="true">search</span>
+          <input
+            id="ctxSearch"
+            type="search"
+            placeholder="Search..."
+            aria-label="Search in menu"
+          />
+        </div>
+
+        <!-- Context body -->
+        <nav class="context-body" id="ctxBody" aria-label="Context menu"></nav>
+      </aside>
+
+      <!-- Main page (empty per assignment) -->
+      <main class="page"></main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,355 @@
+/* ========================================================================== */
+/* THEME TOKENS — only 3 color variables (+ a muted tone derived from text)   */
+/* ========================================================================== */
+:root {
+  --bg: #ffffff; /* app background */
+  --text: #000000; /* foreground text & icons */
+  --hover: rgba(0, 0, 0, 0.08); /* hover surfaces / outlines */
+  --muted: rgba(0, 0, 0, 0.6); /* secondary text (placeholder/labels) */
+}
+html[data-theme="dark"] {
+  --bg: #000000;
+  --text: #ffffff;
+  --hover: rgba(255, 255, 255, 0.08);
+  --muted: rgba(255, 255, 255, 0.6);
+}
+
+/* ========================================================================== */
+/* ICON FONT                                                                  */
+/* Single helper class for Material Symbols (Rounded).                        */
+/* ========================================================================== */
+.mi {
+  font-family: "Material Symbols Rounded";
+  font-weight: 300;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 1;
+  letter-spacing: normal;
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+/* ========================================================================== */
+/* GLOBAL RESET & LAYOUT                                                      */
+/* ========================================================================== */
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+  overflow-x: hidden; /* prevent a transient horizontal scroll during animations */
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.45 Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+}
+
+/* Main app layout: left rail + context rail + page area */
+.app {
+  display: flex;
+  height: 100vh;
+}
+
+/* ========================================================================== */
+/* LEFT RAIL                                                                  */
+/* ========================================================================== */
+.rail {
+  width: 56px; /* fixed width, icon-only */
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px;
+  gap: 8px;
+}
+.rail-spacer {
+  flex: 1;
+} /* pushes settings/account to bottom */
+
+.rail-btn {
+  padding: 8px;
+  height: 40px;
+  width: 40px;
+  border: 0;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition: background 260ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    transform 260ms;
+}
+.rail-btn:hover {
+  background: var(--hover);
+}
+.rail-btn:active {
+  transform: scale(0.98);
+}
+.rail-btn.is-active {
+  background: var(--hover);
+}
+.logo {
+  margin-bottom: 4px;
+}
+
+/* Hairline divider between left rail and context rail; uses currentColor */
+.divider {
+  width: 1px;
+  background: currentColor;
+  opacity: 0.14;
+}
+
+/* ========================================================================== */
+/* SECOND RAIL (CONTEXT) — collapsible menu                                   */
+/* ========================================================================== */
+.context {
+  width: 256px; /* expanded width */
+  padding: 8px;
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  border-right: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
+  /* border-radius: 0px 16px 16px 0px;  optional rounded look */
+
+  contain: inline-size; /* isolates inline-size for smoother width anims */
+  flex: 0 0 auto; /* prevent flex from autosizing this panel */
+  overflow: hidden; /* hide labels while animating width */
+  transition: width 420ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: width; /* hint for the compositor */
+}
+
+/* Header: title + collapse chevron */
+.context-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 8px;
+  padding: 0 4px;
+}
+.ctx-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* Search row (icon + input) */
+.context-search {
+  position: relative;
+  padding: 8px;
+  border-radius: 12px;
+  border: 1px solid var(--hover);
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  height: 40px;
+  align-items: center;
+}
+.context-search input {
+  outline: 0;
+  appearance: none;
+  background: transparent;
+  color: var(--text);
+  border: 0;
+  flex: 1; /* fill the rest next to the icon */
+  min-width: 0; /* allow flex shrink without overflow */
+}
+.context-search input::placeholder {
+  font-weight: 600;
+  color: var(--muted);
+}
+
+/* ========================================================================== */
+/* CONTEXT BODY (scroll area with groups & rows)                              */
+/* ========================================================================== */
+.context-body {
+  width: 100%;
+  flex: 1; /* take remaining height */
+  overflow-y: auto;
+  overflow-x: hidden; /* avoid horizontal scrollbar during width anims */
+}
+
+/* Group label above each list */
+.group-label {
+  margin: 8px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+
+/* UL holding rows */
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Flat clickable rows (icon + label) */
+.row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.14s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.row:hover {
+  background: var(--hover);
+}
+.row.is-active {
+  background: var(--hover);
+}
+.row .mi {
+  font-size: 20px;
+}
+
+/* Parent rows live inside <summary> of <details> */
+.row--parent {
+  padding: 0 12px;
+}
+.row--parent .label {
+  flex: 1;
+} /* push chevron to the end */
+
+summary.row {
+  list-style: none;
+}
+summary.row::-webkit-details-marker {
+  display: none;
+} /* hide default marker */
+
+/* Chevron rotation when a <details> is open */
+.caret {
+  transition: transform 0.14s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.node[open] .caret {
+  transform: rotate(180deg);
+}
+
+/* Child rows (indented items) */
+.children {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.row--child {
+  border: 0;
+  border-radius: 12px;
+  height: 40px;
+  padding: 0 12px;
+  margin-left: 32px; /* indent */
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.14s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.row--child:hover {
+  background: var(--hover);
+}
+
+/* ========================================================================== */
+/* COLLAPSED STATE — icon-only context rail                                   */
+/* ========================================================================== */
+.context--collapsed {
+  width: 56px;
+} /* target width when collapsed */
+
+.context--collapsed .ctx-title {
+  display: none;
+} /* hide header text */
+
+/* Chevrons and any other icons rotate smoothly */
+.context .mi {
+  transition: transform 480ms cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.context--collapsed #ctxCollapse .mi {
+  transform: rotate(180deg);
+}
+
+/* Search: hide input but keep the magnifier as a centered icon button */
+.context--collapsed .context-search input {
+  display: none;
+}
+.context--collapsed .context-search {
+  display: flex;
+  justify-content: center;
+  padding: 8px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+/* Reduce extra padding when collapsed so icons sit centered */
+.context--collapsed .context-head {
+  padding: 0;
+}
+
+/* Hide group titles and text labels; keep icon-only rows */
+.context--collapsed .group-label {
+  display: none;
+}
+.context--collapsed .row .label {
+  display: none; /* we clip/animate labels below as well */
+  transition: all; /* harmless; kept for legacy ease */
+}
+.context--collapsed .row {
+  justify-content: center;
+  height: 40px;
+  padding: 0;
+  margin-inline: auto;
+}
+.context--collapsed .caret {
+  display: none;
+} /* no chevrons needed */
+.context--collapsed .node[open] .children {
+  display: none !important;
+}
+
+/* ========================================================================== */
+/* NO-REFLOW LABEL HIDING (prevents "typing" effect on expand/collapse)       */
+/* We clip the text visually instead of toggling display so width animations  */
+/* don't trigger reflow of the text nodes.                                    */
+/* ========================================================================== */
+.group-label,
+.row .label,
+.context-search input {
+  white-space: nowrap;
+  overflow: hidden;
+  display: inline-block;
+  transition: clip-path 420ms cubic-bezier(0.22, 0.61, 0.36, 1),
+    opacity 320ms ease, transform 320ms ease;
+  clip-path: inset(0 0 0 0); /* fully visible in expanded mode */
+  will-change: clip-path, opacity, transform;
+}
+
+/* Collapsed: clip text from the right, fade, and offset slightly left */
+.context--collapsed .group-label,
+.context--collapsed .row .label,
+.context--collapsed .context-search input {
+  clip-path: inset(0 100% 0 0);
+  opacity: 0;
+  transform: translateX(-6px);
+  pointer-events: none; /* avoid accidental focus/clicks while hidden */
+  overflow: hidden;
+}
